@@ -2,6 +2,9 @@ const express = require("express");
 
 const mongoose = require("mongoose");
 
+require("./models/livro");
+const Livro = mongoose.model("livro");
+
 const app = express();
 
 app.use(express.json());
@@ -19,6 +22,23 @@ app.get("/", (req, res) => {
     return res.json({ titulo: "Livro 1" });
 });
 
+
+app.post("/livro", (req, res) => {
+    const livro = Livro.create(req.body, (err) => {
+        if (err) {
+            return res.status(400).json({
+                error: true,
+                message: "Erro: Livro não foi cadastrado com sucesso"
+            })
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: "Sucesso: " + req.body.titulo + " cadastrado com sucesso"
+        })
+
+    });
+});
 
 app.listen(8083, () => {
     console.log("Rodando na 8083");
