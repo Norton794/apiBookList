@@ -19,7 +19,16 @@ mongoose.connect('mongodb://localhost/books', {
 });
 
 app.get("/", (req, res) => {
-    return res.json({ titulo: "Livro 1" });
+
+    Livro.find({}).then((livro) => {
+        return res.json(livro);
+    }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum livro encontrado"
+        })
+    })
+
 });
 
 
