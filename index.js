@@ -32,6 +32,20 @@ app.get("/", (req, res) => {
 });
 
 
+app.get("/livro/:id", (req, res) => {
+
+    Livro.findOne({ _id: req.params.id }).then((livro) => {
+        return res.json(livro);
+    }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Esse id não corresponde a nenhum livro do banco"
+        })
+    })
+
+});
+
+
 app.post("/livro", (req, res) => {
     const livro = Livro.create(req.body, (err) => {
         if (err) {
@@ -48,6 +62,23 @@ app.post("/livro", (req, res) => {
 
     });
 });
+
+app.put("/livro/:id", (req, res) => {
+    const livro = Livro.updateOne({ _id: req.params.id }, req.body, (err) => {
+        if (err) {
+            return res.status(400).json({
+                error: true,
+                message: "Erro: Não foi editado"
+            })
+        }
+
+        return res.json({
+            error: false,
+            message: "Editado com sucesso"
+        })
+    })
+})
+
 
 app.listen(8083, () => {
     console.log("Rodando na 8083");
