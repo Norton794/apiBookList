@@ -71,14 +71,29 @@ app.put("/livro/:id", (req, res) => {
                 message: "Erro: Não foi editado"
             })
         }
-
         return res.json({
             error: false,
             message: "Editado com sucesso"
         })
     })
-})
+});
 
+
+app.delete("/livro/:id", (req, res) => {
+    const livro = Livro.deleteOne({ _id: req.params.id }, (err) => {
+        if (err) {
+            return res.status(400).json({
+                error: true,
+                message: "Não foi deletado"
+            });
+        }
+        return res.json({
+            error: false,
+            message: "Apagado com sucesso"
+        })
+
+    })
+});
 
 app.listen(8083, () => {
     console.log("Rodando na 8083");
