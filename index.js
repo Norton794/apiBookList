@@ -2,12 +2,20 @@ const express = require("express");
 
 const mongoose = require("mongoose");
 
+const cors = require("cors");
+
 require("./models/livro");
 const Livro = mongoose.model("livro");
 
 const app = express();
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:8083/");
+    app.use(cors());
+    next();
+});
 
 mongoose.connect('mongodb://localhost/books', {
     useNewUrlParser: true,
